@@ -1,0 +1,26 @@
+# Ambiente virtual e cache
+venv/
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Variáveis de ambiente / segredos
+.env
+*.env
+
+# Configurações locais
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+*.bak
+
+# Streamlit / temporários
+.streamlit/
+.cache/
+logs/
+uploads/
