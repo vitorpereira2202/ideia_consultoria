@@ -32,12 +32,9 @@ def ias(custo_mensal_total: float, renda_liquida: float) -> float:
     return 999.0 if renda_liquida <= 0 else (custo_mensal_total / renda_liquida) * 100.0
 
 def classificar_ias(ias_val: float) -> str:
-    if ias_val < 10:
-        return "Excelente (≤ 10%)"
-    if ias_val <= 20:
-        return "Adequado (10–20%)"
-    if ias_val <= 30:
-        return "Atenção (20–30%)"
+    if ias_val < 10: return "Excelente (≤ 10%)"
+    if ias_val <= 20: return "Adequado (10–20%)"
+    if ias_val <= 30: return "Atenção (20–30%)"
     return "Crítico (> 30%)"
 
 def custo_por_km(custo_mensal_total: float, km_mes: float) -> float:
@@ -51,3 +48,24 @@ def recomendacao_texto(ias_val: float, cpk: float) -> str:
     if ias_val <= 30:
         return "Alerta: reveja quilometragem, consumo e seguro. Simule troca por modelo mais eficiente."
     return "Crítico: alto peso no orçamento. Considere vender/trocar ou renegociar seguro/financiamento."
+
+# ---- novo: resumo para reaproveitar no comparador ----
+def resumo(i: Inputs) -> Dict[str, float | dict | str]:
+    c = custos_mensais(i)
+    total = c["total"]
+    ias_val = ias(total, i.renda_liquida)
+    ias_cls = classificar_ias(ias_val)
+    cpk = custo_por_km(total, i.km_mes)
+    saldo = i.renda_liquida - total
+    rec = recomendacao_texto(ias_val, cpk)
+    return {
+        "custos": c,
+        "total": total,
+        "ias_val": ias_val,
+        "ias_classe": ias_cls,
+        "cpk": cpk,
+        "saldo": saldo,
+        "renda": i.renda_liquida,
+        "km_mes": i.km_mes,
+        "rec": rec,
+    }
